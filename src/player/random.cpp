@@ -10,8 +10,8 @@ State* root;
 
 /**
  * @brief Read the board from the file
- * 
- * @param fin 
+ *
+ * @param fin
  */
 void read_board(std::ifstream& fin) {
   Board board;
@@ -35,8 +35,8 @@ void read_board(std::ifstream& fin) {
 
 /**
  * @brief randomly choose a move and then write it into output file
- * 
- * @param fout 
+ *
+ * @param fout
  */
 void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
@@ -45,19 +45,18 @@ void write_valid_spot(std::ofstream& fout) {
     auto move = Random::get_move(root, 0);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
-    
+
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
-    break;
   }
 }
 
 
 /**
  * @brief Main function for player
- * 
- * @param argv 
- * @return int 
+ *
+ * @param argv
+ * @return int
  */
 int main(int, char** argv) {
   srand(RANDOM_SEED);

@@ -1,7 +1,7 @@
 #include <cstdlib>
 
 #include "../state/state.hpp"
-#include "./random.hpp"
+#include "./setvalue1.hpp"
 
 
 /**
@@ -11,10 +11,26 @@
  * @param depth You may need this for other policy
  * @return Move
  */
-Move Random::get_move(State *state, int depth){
+Move Setvalue1::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions();
 
   auto actions = state->legal_actions;
-  return actions[(rand()+depth)%actions.size()];
+  auto self_board = state->board.board[state->player];
+  auto oppo_board = state->board.board[1-state->player];
+
+  int total_pt=0;
+  int highvalueaction=0;
+  for(int i=0;i<actions.size();i++){
+    int h =actions[i].second.first;
+    int w =actions[i].second.second;
+    int now_piece = self_board[h][w];
+    int cur_pt=now_piece;
+    if(i==0 || cur_pt> total_pt){
+        total_pt =cur_pt;
+        highvalueaction =i;
+    }
+
+  }
+  return actions[highvalueaction];
 }
