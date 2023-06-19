@@ -15,28 +15,19 @@
 Move minimax::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions();
-
   auto actions = state->legal_actions;
-  auto self_board = state->board.board[state->player];
-  auto oppo_board = state->board.board[1-state->player];
 
   int total_pt=0;
   int highvalueaction=0;
   for(int i=0;i<actions.size();i++){
-    State child =state->next_state(actions[i]);
-    if(i==0){
-        total_pt = minimaxvalue()
-    }
 
-    int h =actions[i].second.first;
-    int w =actions[i].second.second;
-    int now_piece = self_board[h][w];
-    int cur_pt=now_piece;
-    if(i==0 || cur_pt> total_pt){
-        total_pt =cur_pt;
+    State *child =state->next_state(actions[i]);
+    int now_pt =minimaxvalue(child,depth-1,true);
+
+    if(i==0 || total_pt< now_pt){
+        total_pt = now_pt;
         highvalueaction =i;
     }
-
   }
   return actions[highvalueaction];
 }
@@ -45,23 +36,25 @@ int minimax::minimaxvalue(State *state,int depth ,bool maximizer){
     state->get_legal_actions();
     auto actions =state->legal_actions;
 
-    if(!depth || !state->legal_actions().size()){
+    if(!depth || !state->legal_actions.size()){
         return state->evaluate();
     }
 
     if(maximizer){
         int value =-10000;
         for(int i=0;i<actions.size();i++){
-            State child =state->next_state(actions[i]);
-            value = max(value,minimaxvalue(child,depth-1,false));
+            State *child =state->next_state(actions[i]);
+            int cmp =minimaxvalue(child,depth-1,false);
+            value = value > cmp ? value : cmp;
         }
         return value;
     }
     else{
-        int value = +10000;
-        for(int i=0; i<actions ;i++){
-            State child =state->next_state(actions[i]);
-            value = min(value,minimaxvalue(child,depth-1,true));
+        int value = 10000;
+        for(int i=0; i<actions.size();i++){
+            State *child =state->next_state(actions[i]);
+            int cmp =minimaxvalue(child,depth-1,true);
+            value = value> cmp? cmp : value;
         }
         return value;
     }

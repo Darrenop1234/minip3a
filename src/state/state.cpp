@@ -6,6 +6,114 @@
 #include "../config.hpp"
 
 
+//set white's value table
+const int wkingtable[6][5]= {
+    {-3,-6,-6,-4,-2},
+    {-3,-4,-4,-3,-2},
+    {-3,-5,-5,-5,-2},
+    {-3,-2,-4,-2,-2},
+    { 5, 4, 5, 9, 7},
+    { 2, 5, 9, 7, 0}
+};
+
+const int wqueentable[6][5] ={
+    {-3,-3, 0,-3,-6},
+    { 3, 6, 3, 0,-3},
+    {-3, 3, 6, 3,-6},
+    {-3, 0, 3, 3,-3},
+    {-3, 0, 0, 0,-3},
+    {-6,-3, 0, 0,-6}
+};
+
+const int wrooktable[6][5] ={
+    { 0, 0, 0, 0, 0},
+    { 3, 7, 7, 7, 3},
+    {-2, 0, 0, 0,-1},
+    {-2, 0, 0, 0,-1},
+    {-2, 3, 3, 0,-1},
+    { 0, 2, 2, 0, 0}
+};
+const int wbishoptable[6][5] ={
+    {-4,-2,-2,-2,-4},
+    {-2, 0, 4, 0,-2},
+    {-2, 4, 6, 3,-2},
+    {-2, 3, 6, 3,-2},
+    {-2, 3, 0, 3,-2},
+    {-4,-2,-2,-2,-4}
+};
+
+const int wknighttable[6][5] ={
+    {-4,-3,-2,-3,-4},
+    {-3,-2, 0,-2,-3},
+    {-2, 1, 3, 1,-2},
+    {-2, 3, 3, 3,-2},
+    {-3, 0, 1, 0,-3},
+    {-4,-3,-2,-3,-4}
+};
+
+const int wpawntable[6][5]= {
+    { 0, 0, 0, 0, 0},
+    { 8, 8, 8, 8, 8},
+    { 3, 6, 7, 6, 3},
+    { 0, 0, 2, 0, 0},
+    { 1,-3,-1,-3, 1},
+    { 0, 0, 0, 0, 0}
+};
+
+const int bkingtable[6][5] ={
+    { 0, 7, 9, 5, 2},
+    { 7, 9, 5, 4, 5},
+    {-1,-2,-4,-2,-1},
+    {-1,-5,-5,-5,-3},
+    {-1,-3,-4,-4,-3},
+    {-1,-4,-6,-6,-3}
+};
+
+const int bqueentable[6][5] ={
+    {-6, 0, 0,-3,-6},
+    {-3, 0, 0, 0,-3},
+    {-3, 3, 3, 0,-3},
+    {-3, 3, 6, 3,-3},
+    {-3, 0, 3, 6, 3},
+    {-6,-3, 0,-3,-6}
+};
+
+const int brooktable[6][5] ={
+    { 0, 2, 2, 0, 0},
+    {-1, 3, 3, 0,-2},
+    {-1, 0, 0, 0,-2},
+    {-1, 0, 0, 0,-2},
+    { 3, 7, 7, 7, 3},
+    { 0, 0, 0, 0, 0}
+};
+
+const int bbishoptable[6][5] ={
+    {-4,-2,-2,-2,-4},
+    {-2, 3, 0, 3,-2},
+    {-2, 3, 6, 3,-2},
+    {-2, 3, 6, 4,-2},
+    {-2, 0, 4, 0,-2},
+    {-4,-2,-2,-2,-4}
+};
+
+const int  bknighttable[6][5] ={
+    {-4,-3,-2,-3,-4},
+    {-3, 0, 1, 0,-3},
+    {-2, 3, 3, 3,-2},
+    {-2, 1, 3, 1,-2},
+    {-3,-2, 0,-2,-3},
+    {-4,-3,-2,-3,-4}
+};
+
+const int bpawntable[6][5] ={
+    { 0, 0, 0, 0, 0},
+    { 1,-3,-1,-3, 1},
+    { 0, 0, 2, 0, 0},
+    { 3, 6, 7, 6, 3},
+    { 8, 8, 8, 8, 8},
+    { 0, 0, 0, 0, 0}
+};
+
 /**
  * @brief evaluate the state
  *
@@ -13,8 +121,90 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
+  //white's table
+  int value=0;
 
-  return 0;
+  if(!this->player){
+   for(int y=0;y<6;y++){
+    for(int x=0;x<5;x++){
+        int wtype =this->board.board[this->player][y][x];
+        int btype =this->board.board[1-this->player][y][x];
+        switch(wtype){
+          case 1:
+            value+= bpawntable[y][x]; break;
+          case 2:
+            value+= brooktable[y][x]; break;
+          case 3:
+            value+= bknighttable[y][x]; break;
+          case 4:
+            value+= bbishoptable[y][x]; break;
+          case 5:
+            value+= bqueentable[y][x]; break;
+          case 6:
+            value+= bkingtable[y][x]; break;
+          default:
+            break;
+        }
+        switch(btype){
+          case 1:
+            value-= bpawntable[y][x]; break;
+          case 2:
+            value-= brooktable[y][x]; break;
+          case 3:
+            value-= bknighttable[y][x]; break;
+          case 4:
+            value-= bbishoptable[y][x]; break;
+          case 5:
+            value-= bqueentable[y][x]; break;
+          case 6:
+            value-= bkingtable[y][x]; break;
+          default:
+            break;
+        }
+    }
+   }
+  }
+  else{
+    for(int y=0;y<6;y++){
+     for(int x=0;x<5;x++){
+        int btype =this->board.board[this->player][y][x];
+        int wtype =this->board.board[1-this->player][y][x];
+        switch(btype){
+          case 1:
+            value+= bpawntable[y][x]; break;
+          case 2:
+            value+= brooktable[y][x]; break;
+          case 3:
+            value+= bknighttable[y][x]; break;
+          case 4:
+            value+= bbishoptable[y][x]; break;
+          case 5:
+            value+= bqueentable[y][x]; break;
+          case 6:
+            value+= bkingtable[y][x]; break;
+          default:
+            break;
+        }
+        switch(wtype){
+          case 1:
+            value-= bpawntable[y][x]; break;
+          case 2:
+            value-= brooktable[y][x]; break;
+          case 3:
+            value-= bknighttable[y][x]; break;
+          case 4:
+            value-= bbishoptable[y][x]; break;
+          case 5:
+            value-= bqueentable[y][x]; break;
+          case 6:
+            value-= bkingtable[y][x]; break;
+          default:
+            break;
+        }
+    }
+   }
+  }
+  return value;
 }
 
 
