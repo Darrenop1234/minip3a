@@ -6,7 +6,7 @@
  * @brief Policy class for random policy,
  * your policy class should have get_move method
  */
-class Setvalue1{
+class Statevalue1{
 public:
   static Move get_move(State *state, int depth);
 };

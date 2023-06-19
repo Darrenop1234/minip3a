@@ -1,7 +1,7 @@
 #include <cstdlib>
 
 #include "../state/state.hpp"
-#include "./setvalue1.hpp"
+#include "./statevalue1.hpp"
 
 
 /**
@@ -11,7 +11,7 @@
  * @param depth You may need this for other policy
  * @return Move
  */
-Move Setvalue1::get_move(State *state, int depth){
+Move Statevalue1::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions();
 

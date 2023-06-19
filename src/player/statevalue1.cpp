@@ -3,7 +3,7 @@
 
 #include "../config.hpp"
 #include "../state/state.hpp"
-#include "../policy/setvalue1.hpp"
+#include "../policy/statevalue1.hpp"
 
 
 State* root;
@@ -42,7 +42,7 @@ void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
   while(true) {
     // Choose a random spot.
-    auto move = Setvalue1::get_move(root, 10);
+    auto move = Statevalue1::get_move(root, 10);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
 
