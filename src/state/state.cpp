@@ -121,9 +121,9 @@ const int bpawntable[6][5] ={
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  //white's table
-  int value=0;
 
+  int value=0;
+  //white's table
   if(!this->player){
    for(int y=0;y<6;y++){
     for(int x=0;x<5;x++){
