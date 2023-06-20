@@ -1,7 +1,7 @@
 #include <cstdlib>
 
 #include "../state/state.hpp"
-#include "./minimax.hpp"
+#include "./alphabeta.hpp"
 
 
 
@@ -12,7 +12,7 @@
  * @param depth You may need this for other policy
  * @return Move
  */
-Move minimax::get_move(State *state, int depth){
+Move alphabeta::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions();
   auto actions = state->legal_actions;
@@ -22,7 +22,7 @@ Move minimax::get_move(State *state, int depth){
   for(int i=0;i<actions.size();i++){
 
     State *child =state->next_state(actions[i]);
-    int now_pt =minimaxvalue(child,depth-1,true);
+    int now_pt =alphabetavalue(child,depth-1,-10000,10000,true);
 
     if(i==0 || total_pt< now_pt){
         total_pt = now_pt;
@@ -32,29 +32,36 @@ Move minimax::get_move(State *state, int depth){
   return actions[highvalueaction];
 }
 
-int minimax::minimaxvalue(State *state,int depth ,bool maximizer){
+int alphabeta::alphabetavalue(State *state,int depth , int a , int b ,bool maximizer){
     state->get_legal_actions();
     auto actions =state->legal_actions;
 
     if(!depth || !state->legal_actions.size()){
         return state->evaluate();
     }
-
+    //max
     if(maximizer){
         int value =-10000;
         for(int i=0;i<actions.size();i++){
             State *child =state->next_state(actions[i]);
-            int cmp =minimaxvalue(child,depth-1,false);
-            value = value >= cmp ? value : cmp;
+            int cmp =alphabetavalue(child,depth-1,a,b,false);
+            value = value > cmp ? value : cmp;
+            a =  a > value ? a : value;
+            if(a>=b)
+                break;
         }
         return value;
     }
+    //min
     else{
         int value = 10000;
         for(int i=0; i<actions.size();i++){
             State *child =state->next_state(actions[i]);
-            int cmp =minimaxvalue(child,depth-1,true);
-            value = value >= cmp? cmp : value;
+            int cmp =alphabetavalue(child,depth-1,a,b,true);
+            value = value> cmp? cmp : value;
+            b = b > value ? value : b;
+            if(b>=a)
+                break;
         }
         return value;
     }
