@@ -24,7 +24,7 @@ Move Statevalue1::get_move(State *state, int depth){
   for(int i=0;i<actions.size();i++){
     int h =actions[i].second.first;
     int w =actions[i].second.second;
-    int now_piece = self_board[h][w];
+    int now_piece = oppo_board[h][w];
     int cur_pt=now_piece;
     if(i==0 || cur_pt> total_pt){
         total_pt =cur_pt;
